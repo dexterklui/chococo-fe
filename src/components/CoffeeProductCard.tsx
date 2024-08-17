@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Coffee } from "../lib/data-fetch/coffee";
+import { Card } from "antd";
 
 export default function CoffeeProductCard({ coffee }: { coffee: Coffee }) {
   const [imageSrc, setImageSrc] = useState(coffee.image_url);
@@ -11,15 +12,21 @@ export default function CoffeeProductCard({ coffee }: { coffee: Coffee }) {
   };
 
   return (
-    <div>
-      <h3>{coffee.name}</h3>
-      {/* <img src={coffee.image_url} alt={`Logo for ${coffee.name}`} /> */}
-      <img
-        src={imageSrc}
-        onError={handleImageError}
-        alt={`Logo for ${coffee.name}`}
+    <Card
+      hoverable
+      style={{ width: 240 }}
+      cover={
+        <img
+          src={imageSrc}
+          onError={handleImageError}
+          alt={`Logo for ${coffee.name}`}
+        />
+      }
+    >
+      <Card.Meta
+        title={<a href={coffee.sourceurl}>{coffee.name}</a>}
+        description={`$${coffee["Price / 100g in HKD"]}/100g ${coffee.Country}`}
       />
-      <p>Origin: {coffee.Country}</p>
-    </div>
+    </Card>
   );
 }
