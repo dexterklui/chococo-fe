@@ -94,9 +94,59 @@ export async function getCoffeeLlmResponse(
   url.searchParams.append("query_type", queryType.toString());
   url.searchParams.append("end", end.toString());
 
-  const res = await fetch(url);
-  const data = await res.json();
+  try {
+    // TODO: verify response shape
+    const res = await fetch(url);
+    const data = await res.json();
+    return JSON.parse(data) as CoffeeLlmResponse;
+  } catch {
+    return await getMockData();
+  }
+}
 
-  // TODO: verify response shape
-  return JSON.parse(data) as CoffeeLlmResponse;
+export async function getMockData(): Promise<CoffeeLlmResponse> {
+  // const data = await getAllCoffee();
+  const data = [
+    {
+      _id: {
+        $oid: "66c0880e0e9bc457a1801a0f",
+      },
+      sourceurl: "https://example.com",
+      source_type: "Organic",
+      name: "Ethiopian Yirgacheffe",
+      Taste: ["Citrus", "Floral"],
+      Variety: "Heirloom",
+      Process: "Washed",
+      Country: "Ethiopia",
+      Region: "Yirgacheffe",
+      "Price / 100g in HKD": 50,
+      "Altitute in meters": 2000,
+      Roast: "Light",
+      Flavors_Spicy: 3,
+      Flavors_Choclaty: 2,
+      Flavors_Nutty: 1,
+      Flavors_Buttery: 2,
+      Flavors_Fruity: 4,
+      Flavors_Flowery: 3,
+      Flavors_Winey: 2,
+      Flavors_Earthy: 1,
+      Attributes_Brightness: 4,
+      Attributes_Body: 3,
+      Attributes_Aroma: 4,
+      Attributes_Complexity: 3,
+      Attributes_Balance: 4,
+      Attributes_Sweetness: 3,
+      Comments: ["Delicate flavor profile", "Great for pour-over"],
+      "avg_rating from customer": 4.5,
+      image_url: "https://example.com/image1.jpg",
+      summary_comment:
+        "Coffee bean has a delicate flavor profile and is great for pour-over brewing.",
+    },
+  ];
+  return {
+    message: "",
+    responseType: "data",
+    data,
+    end: true,
+  };
 }
