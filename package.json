@@ -10,8 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "ag-grid-react": "^32.1.0",
+    "antd": "^5.20.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-chatbotify": "^2.0.0-beta.5",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.1",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
