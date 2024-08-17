@@ -1,5 +1,12 @@
-const COFFEE_URL = "http://localhost:8000/coffee/all";
-const COFFEE_LLM_URL = "http://localhost:8000/coffee/llm";
+let COFFEE_URL: string;
+let COFFEE_LLM_URL: string;
+if (import.meta.env.PROD) {
+  COFFEE_URL = "https://choco-coffee-connoisseur-ten.vercel.app/coffee/all";
+  COFFEE_LLM_URL = "https://choco-coffee-connoisseur-ten.vercel.app/coffee/llm";
+} else {
+  COFFEE_URL = "http://localhost:8000/coffee/all";
+  COFFEE_LLM_URL = "http://localhost:8000/coffee/llm";
+}
 
 export const CoffeeKeyDef = [
   { field: "sourceurl" },
@@ -33,8 +40,8 @@ export const CoffeeKeyDef = [
 ];
 
 export type Coffee = {
-  _id: { $oid: string };
-  sourceurl: string;
+  // _id: { $oid: string };
+  _id: string;
   source_type: string;
   name: string;
   Taste: string[];
@@ -105,12 +112,9 @@ export async function getCoffeeLlmResponse(
 }
 
 export async function getMockData(): Promise<CoffeeLlmResponse> {
-  // const data = await getAllCoffee();
   const data = [
     {
-      _id: {
-        $oid: "66c0880e0e9bc457a1801a0f",
-      },
+      _id: "66c0880e0e9bc457a1801a0f",
       sourceurl: "https://example.com",
       source_type: "Organic",
       name: "Ethiopian Yirgacheffe",
