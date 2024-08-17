@@ -7,7 +7,7 @@ export default function CoffeeProductsCatalogue({
   coffees: Coffee[];
 }) {
   return (
-    <div style={{ display: "flex", gap: "8px" }}>
+    <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
       {coffees.map((coffee) => (
         <CoffeeProductCard key={coffee.name} coffee={coffee} />
       ))}
