@@ -3,8 +3,8 @@ import { useState } from "react";
 import {
   Coffee,
   CoffeeLlmResponse,
-  getAllCoffee,
-  getCoffeeLlmResponse,
+  // getAllCoffee,
+  // getCoffeeLlmResponse,
   getMockData,
 } from "../lib/data-fetch/coffee";
 import { ColDef } from "./CoffeeProductTable";
@@ -15,7 +15,7 @@ function generateQueryId() {
 
 export default function ChatbotWidget({
   setCoffees,
-  setColDefs,
+  // setColDefs,
 }: {
   setCoffees: React.Dispatch<React.SetStateAction<Coffee[]>>;
   setColDefs: React.Dispatch<React.SetStateAction<ColDef[]>>;
@@ -37,7 +37,7 @@ export default function ChatbotWidget({
           // response = await getCoffeeLlmResponse(queryId, param.userInput, 1);
           response = await getMockData();
         } catch (error) {
-          console.error(error);
+          console.error(error, queryId);
           param.injectMessage("Sorry, I encountered an error.");
           param.goToPath("start");
           return;

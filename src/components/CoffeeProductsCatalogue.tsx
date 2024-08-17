@@ -1,4 +1,3 @@
-import React from "react";
 import { Coffee } from "../lib/data-fetch/coffee";
 import CoffeeProductCard from "./CoffeeProductCard";
 
