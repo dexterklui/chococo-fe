@@ -24,7 +24,13 @@ export default function CoffeeProductCard({ coffee }: { coffee: Coffee }) {
       }
     >
       <Card.Meta
-        title={<a href={coffee.sourceurl}>{coffee.name}</a>}
+        title={
+          coffee.sourceurl ? (
+            <a href={coffee.sourceurl}>{coffee.name}</a>
+          ) : (
+            coffee.name
+          )
+        }
         description={`$${coffee["Price / 100g in HKD"]}/100g ${coffee.Country}`}
       />
     </Card>

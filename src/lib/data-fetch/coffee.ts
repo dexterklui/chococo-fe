@@ -42,6 +42,7 @@ export const CoffeeKeyDef = [
 export type Coffee = {
   // _id: { $oid: string };
   _id: string;
+  sourceurl?: string;
   source_type: string;
   name: string;
   Taste: string[];
