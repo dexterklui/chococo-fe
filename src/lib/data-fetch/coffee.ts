@@ -86,11 +86,13 @@ export async function getCoffeeLlmResponse(
   sessionId: string,
   query: string,
   queryType: number,
+  end: boolean = true,
 ): Promise<CoffeeLlmResponse> {
   const url: URL = new URL(COFFEE_LLM_URL);
-  url.searchParams.append("sessionId", sessionId);
+  url.searchParams.append("session_id", sessionId);
   url.searchParams.append("query", query);
-  url.searchParams.append("queryType", queryType.toString());
+  url.searchParams.append("query_type", queryType.toString());
+  url.searchParams.append("end", end.toString());
 
   const res = await fetch(url);
   const data = await res.json();
