@@ -33,6 +33,7 @@ const defaultColDefs: ColDef[] = [
 
 export default function CoffeeProducts() {
   const [coffees, setCoffees] = useState<Coffee[]>([]);
+  const [allCoffees, setAllCoffees] = useState<Coffee[]>([]);
   const colDefs = defaultColDefs;
   // const [colDefs, setColDefs] = useState<ColDef[]>(defaultColDefs);
   const [tableMode, setTableMode] = useState<boolean>(true);
@@ -41,9 +42,10 @@ export default function CoffeeProducts() {
     async function fetchData() {
       const data = await getAllCoffee();
       setCoffees(data);
+      setAllCoffees(data);
     }
     fetchData();
-  }, [setCoffees]);
+  }, [setCoffees, setAllCoffees]);
 
   return (
     <>
@@ -62,7 +64,11 @@ export default function CoffeeProducts() {
           <CoffeeProductsCatalogue coffees={coffees} />
         )}
       </section>
-      <ChatbotWidget setCoffees={setCoffees} coffees={coffees} />
+      <ChatbotWidget
+        setCoffees={setCoffees}
+        coffees={coffees}
+        allCoffees={allCoffees}
+      />
     </>
   );
 }

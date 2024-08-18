@@ -15,10 +15,12 @@ export default function ChatbotWidget({
   setCoffees,
   // setColDefs,
   coffees,
+  allCoffees,
 }: {
   setCoffees: React.Dispatch<React.SetStateAction<Coffee[]>>;
   // setColDefs: React.Dispatch<React.SetStateAction<ColDef[]>>;
   coffees: Coffee[];
+  allCoffees: Coffee[];
 }) {
   const [queryId, setQueryId] = useState("");
   const [end, setEnd] = useState(false);
@@ -34,6 +36,7 @@ export default function ChatbotWidget({
         "Filter data",
         "Plot a graph",
         "Give me coffee bean product recommendations",
+        "Show me similar products with another product",
       ],
       path: (param) => {
         switch (param.userInput) {
@@ -43,6 +46,8 @@ export default function ChatbotWidget({
             return "llmPlotDataStart";
           case "Give me coffee bean product recommendations":
             return "llmRecommendStart";
+          case "Show me similar products with another product":
+            return "llmSimilarityRecommendStart";
         }
       },
       chatDisabled: true,
@@ -214,8 +219,8 @@ E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
         }
 
         // Suppress message if its a data response for this
-        if (response.responseType == "message" && response.message)
-          return response.message;
+        // if (response.responseType == "message" && response.message)
+        if (response.message) return response.message;
         return;
       },
       options: ["start over"],
@@ -225,6 +230,70 @@ E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
       },
     },
     llmRecommendEnd: {
+      message:
+        "Sure, here I have filtered the data with my recommendations. Please check my selections in the table or catalogue",
+      transition: { duration: 1000 },
+      path: "start",
+    },
+    llmSimilarityRecommendStart: {
+      message: `Sure, can you copy one product name here such that I can recommend similar products?"`,
+      options: ["start over"],
+      path: (param) => {
+        if (param.userInput === "start over") return "start";
+        if (allCoffees.filter((coffee) => coffee.name === param.userInput))
+          return "llmSimilarityRecommendMain";
+        return "llmSimilarityRecommendUnfoundName";
+      },
+    },
+    llmSimilarityRecommendUnfoundName: {
+      message: `Sorry, couldn't find this exact product name, can you copy one product name here such that I can recommend similar products?"`,
+      options: ["start over"],
+      path: (param) => {
+        if (param.userInput === "start over") return "start";
+        if (allCoffees.filter((coffee) => coffee.name === param.userInput))
+          return "llmSimilarityRecommendMain";
+        return "llmSimilarityRecommendRepeat";
+      },
+    },
+    llmSimilarityRecommendMain: {
+      message: async (param) => {
+        let response: CoffeeLlmResponse;
+        try {
+          response = await getCoffeeLlmResponse(queryId, param.userInput, 5);
+        } catch (error) {
+          console.error(error, queryId);
+          param.injectMessage("Sorry, I encountered an error.");
+          param.goToPath("start");
+          return;
+        }
+
+        // if (response.responseType === "data") console.log("received data");
+        if (response.responseType === "data" && response.data) {
+          const data =
+            typeof response.data == "string"
+              ? JSON.parse(response.data)
+              : response.data;
+          console.log(typeof data, ":", data);
+          setCoffees(data);
+        }
+
+        if (response.end) {
+          setEnd(true);
+          param.goToPath("llmSimilarityRecommendEnd");
+        } else {
+          setEnd(false);
+        }
+
+        if (response.message) return response.message;
+        return;
+      },
+      options: ["start over"],
+      path: (param) => {
+        if (param.userInput === "start over") return "start";
+        return "llmSimilarityRecommendMain";
+      },
+    },
+    llmSimilarityRecommendEnd: {
       message:
         "Sure, here I have filtered the data with my recommendations. Please check my selections in the table or catalogue",
       transition: { duration: 1000 },
