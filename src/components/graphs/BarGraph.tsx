@@ -27,7 +27,9 @@ export const BarGraph = ({ data, schema }: BarGraphProps) => {
 
   // calculate the average of the y_axis dataKey for each unique value of x_axis dataKey
   for (const coffee of data) {
+    // @ts-ignore
     const xValue = coffee[schema.x_axis];
+    // @ts-ignore
     const yValue = coffee[schema.y_axis];
     sumForEachX.set(
       xValue,
