@@ -275,7 +275,7 @@ E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
       message: async (param) => {
         let response: CoffeeLlmResponse;
         try {
-          response = await getCoffeeLlmResponse(queryId, param.userInput, 5);
+          response = await getCoffeeLlmResponse(queryId, param.userInput, 6);
         } catch (error) {
           console.error(error, queryId);
           param.injectMessage("Sorry, I encountered an error.");
