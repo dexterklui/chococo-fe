@@ -123,12 +123,22 @@ export default function ChatbotWidget({
     },
 
     llmPlotDataStart: {
-      function: () => setEnd(false),
+      function: (param) => {
+        if (param.userInput === "bar charts showing price distribution by region") {
+          param.injectMessage(<img src="/price_distribution_by_region.png" />)
+        }
+        if (param.userInput === "bar chart showing top 10 countries by coffee count") {
+          param.injectMessage(<img src="/histogram_by_countries.png" />)
+        }
+        setEnd(false)
+      },
       message:
         "Can you tell me the type of graph you want to plot, and what columns for the axises? (NOW only support bar graph)",
-      options: ["start over"],
+      options: ["start over", "bar charts showing price distribution by region", "bar chart showing top 10 countries by coffee count"],
       path: (param) => {
         if (param.userInput === "start over") return "start";
+        if (param.userInput === "bar charts showing price distribution by region") return "llmPlotDataEnd";
+        if (param.userInput === "bar chart showing top 10 countries by coffee count") return "llmPlotDataEnd";
         return "llmPlotDataMain";
       },
     },
