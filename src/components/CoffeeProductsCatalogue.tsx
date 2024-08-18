@@ -1,9 +1,9 @@
 // @ts-nocheck
 import { Coffee } from "../lib/data-fetch/coffee";
 import CoffeeProductCard from "./CoffeeProductCard";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import Select from 'react-select';
+import Select from "react-select";
 
 const MultiValueDropdown = ({ options, defaultValue, onChange }) => (
   <Select
@@ -13,25 +13,40 @@ const MultiValueDropdown = ({ options, defaultValue, onChange }) => (
     onChange={onChange}
   />
 );
-const CoffeeProductsCatalogue = ({ coffees }: { coffees: Coffee }) => {
-  const [selectedCountries, setSelectedCountries] = useState([{ value: 'all', label: 'All' }]);
-  const [selectedAttributesBrightness, setSelectedAttributesBrightness] = useState([{ value: 'all', label: 'All' }]);
-  const [selectedAttributesBody, setselectedAttributesBody] = useState([{ value: 'all', label: 'All' }]);
-  const [selectedAttributesAroma, setselectedAttributesAroma] = useState([{ value: 'Attributes_Aroma', label: 'Aroma' }]);
-  const [selectedAttributesComplexity, setselectedAttributesComplexity] = useState([{ value: 'Attributes_Complexity', label: 'Complexity' }]);
-  const [selectedAttributesSweetness, setselectedAttributesSweetness] = useState([{ value: 'Attributes_Sweetness', label: 'Sweetness' }]);
-  const [selectedAttributesBalance, setselectedAttributesBalance] = useState([  { value: 'Attributes_Balance', label: 'Balance' }]);
+const CoffeeProductsCatalogue = ({ coffees }: { coffees: Coffee[] }) => {
+  const [selectedCountries, setSelectedCountries] = useState([
+    { value: "all", label: "All" },
+  ]);
+  const [selectedAttributesBrightness, setSelectedAttributesBrightness] =
+    useState([{ value: "all", label: "All" }]);
+  const [selectedAttributesBody, setselectedAttributesBody] = useState([
+    { value: "all", label: "All" },
+  ]);
+  const [selectedAttributesAroma, setselectedAttributesAroma] = useState([
+    { value: "Attributes_Aroma", label: "Aroma" },
+  ]);
+  const [selectedAttributesComplexity, setselectedAttributesComplexity] =
+    useState([{ value: "Attributes_Complexity", label: "Complexity" }]);
+  const [selectedAttributesSweetness, setselectedAttributesSweetness] =
+    useState([{ value: "Attributes_Sweetness", label: "Sweetness" }]);
+  const [selectedAttributesBalance, setselectedAttributesBalance] = useState([
+    { value: "Attributes_Balance", label: "Balance" },
+  ]);
   // Extract unique countries and attributes brightness levels for dropdown options
-  const countries = Array.from(new Set(coffees.map(coffee => coffee.Country)));
-  const attributeLevels = Array.from({ length: 7 }, (_, index) => (index + 1).toString());
+  const countries = Array.from(
+    new Set(coffees.map((coffee) => coffee.Country)),
+  );
+  const attributeLevels = Array.from({ length: 7 }, (_, index) =>
+    (index + 1).toString(),
+  );
 
   const options_country = [
-    { value: 'all', label: 'All' },
-    ...countries.map(country => ({ value: country, label: country })),
+    { value: "all", label: "All" },
+    ...countries.map((country) => ({ value: country, label: country })),
   ];
   const options_levels = [
-    { value: 'all', label: 'All' },
-    ...attributeLevels.map(level => ({ value: level, label: level })),
+    { value: "all", label: "All" },
+    ...attributeLevels.map((level) => ({ value: level, label: level })),
   ];
 
   // Handle dropdown selection changes for countries
@@ -52,25 +67,42 @@ const CoffeeProductsCatalogue = ({ coffees }: { coffees: Coffee }) => {
     setselectedAttributesBody(selectedOptions);
   };
 
-
-
-
   // Filter function based on selected countries and attributes brightness levels
-  const filterCoffees = (coffees, countries, attributesBrightness, attributesBody,aroma ) => {
-    return coffees.filter(coffee =>
-      (countries.some(option => option.value === 'all') || countries.some(option => option.value === coffee.Country)) 
-      && (attributesBrightness.some(option => option.value === 'all') || attributesBrightness.some(option => option.value === coffee.Attributes_Brightness.toString()))
-      && (attributesBody.some(option => option.value === 'all') || attributesBody.some(option => option.value === coffee.Attributes_Body.toString()))
+  const filterCoffees = (
+    coffees,
+    countries,
+    attributesBrightness,
+    attributesBody,
+    aroma,
+  ) => {
+    return coffees.filter(
+      (coffee) =>
+        (countries.some((option) => option.value === "all") ||
+          countries.some((option) => option.value === coffee.Country)) &&
+        (attributesBrightness.some((option) => option.value === "all") ||
+          attributesBrightness.some(
+            (option) =>
+              option.value === coffee.Attributes_Brightness.toString(),
+          )) &&
+        (attributesBody.some((option) => option.value === "all") ||
+          attributesBody.some(
+            (option) => option.value === coffee.Attributes_Body.toString(),
+          )),
     );
   };
 
   // Get filtered coffees
-  const filteredCoffees = filterCoffees(coffees, selectedCountries, selectedAttributesBrightness, selectedAttributesBody );
+  const filteredCoffees = filterCoffees(
+    coffees,
+    selectedCountries,
+    selectedAttributesBrightness,
+    selectedAttributesBody,
+  );
 
   return (
     <div>
       {/* Dropdowns for filtering */}
-      <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
+      <div style={{ display: "flex", gap: "16px", marginBottom: "16px" }}>
         <MultiValueDropdown
           options={options_country}
           defaultValue={selectedCountries}
