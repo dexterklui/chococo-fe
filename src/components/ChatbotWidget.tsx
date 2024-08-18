@@ -125,10 +125,10 @@ export default function ChatbotWidget({
     llmPlotDataStart: {
       function: (param) => {
         if (param.userInput === "bar charts showing price distribution by region") {
-          param.injectMessage(<img src="/price_distribution_by_region.png" />)
+          param.injectMessage(<img src="/price_distribution_by_region.png" height="480px" />)
         }
         if (param.userInput === "bar chart showing top 10 countries by coffee count") {
-          param.injectMessage(<img src="/histogram_by_countries.png" />)
+          param.injectMessage(<img src="/histogram_by_countries.png" height="480px" />)
         }
         setEnd(false)
       },
@@ -338,7 +338,7 @@ E.g. "requirements: very fruity, blueberry taste"`,
         // general: { embedded: true },
         chatWindow: { showScrollbar: true },
       }}
-      styles={{ chatWindowStyle: { width: "70vw" } }}
+      styles={{ chatWindowStyle: { width: "70vw", height: "80vh" } }}
     />
   );
 }
