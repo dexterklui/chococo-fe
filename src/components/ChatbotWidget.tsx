@@ -250,8 +250,10 @@ E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
       options: ["start over"],
       path: (param) => {
         if (param.userInput === "start over") return "start";
-        if (allCoffees.filter((coffee) => coffee.name === param.userInput))
-          return "llmSimilarityRecommendMain";
+        const filter = allCoffees.filter(
+          (coffee) => coffee.name === param.userInput,
+        );
+        if (filter.length > 0) return "llmSimilarityRecommendMain";
         return "llmSimilarityRecommendUnfoundName";
       },
     },
@@ -261,8 +263,10 @@ E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
       options: ["start over"],
       path: (param) => {
         if (param.userInput === "start over") return "start";
-        if (allCoffees.filter((coffee) => coffee.name === param.userInput))
-          return "llmSimilarityRecommendMain";
+        const filter = allCoffees.filter(
+          (coffee) => coffee.name === param.userInput,
+        );
+        if (filter.length > 0) return "llmSimilarityRecommendMain";
         return "llmSimilarityRecommendRepeat";
       },
     },
