@@ -54,7 +54,7 @@ export default function ChatbotWidget({
     },
 
     filterStart: {
-      message: "Hello, how would you like to filter the data?",
+      message: "How would you like to filter the data?",
       options: ["start over"],
       path: (param) => {
         if (param.userInput === "start over") return "start";
@@ -109,7 +109,7 @@ export default function ChatbotWidget({
     llmPhase1End: {
       function: () => setEnd(false),
       message:
-        "Would you like to start again, or plot a graph from current data?",
+        "Sure, I have filtered the data and update the table and catalogue. Would you like to start again, or plot a graph from current data?",
       options: ["start again", "plot a graph"],
       chatDisabled: true,
       path: (param) => {
