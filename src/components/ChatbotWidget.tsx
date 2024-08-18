@@ -176,8 +176,8 @@ export default function ChatbotWidget({
       },
     },
     llmRecommendStart: {
-      message:
-        "Sure, what criteria do you have in mind, like which flavor do you like?",
+      message: `Sure, what criteria do you have in mind, like which flavor do you like?
+E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
       options: ["start over"],
       path: (param) => {
         if (param.userInput === "start over") return "start";
