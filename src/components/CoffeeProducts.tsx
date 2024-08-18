@@ -29,6 +29,7 @@ const defaultColDefs: ColDef[] = [
   { field: "Attributes_Complexity", filter: true },
   { field: "Attributes_Balance", filter: true },
   { field: "Attributes_Sweetness", filter: true },
+  { field: "summary_comment" },
 ];
 
 export default function CoffeeProducts() {

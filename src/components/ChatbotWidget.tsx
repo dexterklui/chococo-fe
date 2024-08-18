@@ -52,6 +52,7 @@ export default function ChatbotWidget({
       },
       chatDisabled: true,
     },
+
     filterStart: {
       message: "Hello, how would you like to filter the data?",
       options: ["start over"],
@@ -60,6 +61,7 @@ export default function ChatbotWidget({
         return "llmPhase1";
       },
     },
+
     llmPhase1: {
       message: async (param) => {
         let response: CoffeeLlmResponse;
@@ -103,6 +105,7 @@ export default function ChatbotWidget({
         return "llmPhase1";
       },
     },
+
     llmPhase1End: {
       function: () => setEnd(false),
       message:
@@ -118,6 +121,7 @@ export default function ChatbotWidget({
         }
       },
     },
+
     llmPlotDataStart: {
       function: () => setEnd(false),
       message:
@@ -128,6 +132,7 @@ export default function ChatbotWidget({
         return "llmPlotDataMain";
       },
     },
+
     llmPlotDataMain: {
       message: async (param) => {
         let response: CoffeeLlmResponse;
@@ -166,6 +171,7 @@ export default function ChatbotWidget({
         return "llmPlotDataMain";
       },
     },
+
     llmPlotDataEnd: {
       function: () => setEnd(false),
       message:
@@ -180,6 +186,7 @@ export default function ChatbotWidget({
         }
       },
     },
+
     llmRecommendStart: {
       message: `Sure, what criteria do you have in mind, like which flavor do you like?
 E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
@@ -189,6 +196,7 @@ E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
         return "llmRecommendMain";
       },
     },
+
     llmRecommendMain: {
       message: async (param) => {
         let response: CoffeeLlmResponse;
@@ -229,12 +237,14 @@ E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
         return "llmPlotDataMain";
       },
     },
+
     llmRecommendEnd: {
       message:
         "Sure, here I have filtered the data with my recommendations. Please check my selections in the table or catalogue",
       transition: { duration: 1000 },
       path: "start",
     },
+
     llmSimilarityRecommendStart: {
       message: `Sure, can you copy one product name here such that I can recommend similar products?"`,
       options: ["start over"],
@@ -245,6 +255,7 @@ E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
         return "llmSimilarityRecommendUnfoundName";
       },
     },
+
     llmSimilarityRecommendUnfoundName: {
       message: `Sorry, couldn't find this exact product name, can you copy one product name here such that I can recommend similar products?"`,
       options: ["start over"],
@@ -255,6 +266,7 @@ E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
         return "llmSimilarityRecommendRepeat";
       },
     },
+
     llmSimilarityRecommendMain: {
       message: async (param) => {
         let response: CoffeeLlmResponse;
@@ -293,6 +305,7 @@ E.g. "I’m looking for fruity coffees from Ethiopia. What do you suggest?"`,
         return "llmSimilarityRecommendMain";
       },
     },
+
     llmSimilarityRecommendEnd: {
       message:
         "Sure, here I have filtered the data with my recommendations. Please check my selections in the table or catalogue",
