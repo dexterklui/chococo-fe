@@ -22,7 +22,7 @@ export const CoffeeKeyDef = [
   { field: "Altitude_in_meters" },
   { field: "Roast" },
   { field: "Comments" },
-  { field: "avg_rating_from_customer" },
+  { field: "avg_rating from customer" },
   { field: "Flavors_Spicy" },
   { field: "Flavors_Chocolaty" },
   { field: "Flavors_Nutty" },
