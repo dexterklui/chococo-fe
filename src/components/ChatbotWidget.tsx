@@ -125,7 +125,7 @@ export default function ChatbotWidget({
     llmPlotDataStart: {
       function: () => setEnd(false),
       message:
-        "Can you tell me the type of graph you want to plot, and what columns for the axises?",
+        "Can you tell me the type of graph you want to plot, and what columns for the axises? (NOW only support bar graph)",
       options: ["start over"],
       path: (param) => {
         if (param.userInput === "start over") return "start";
