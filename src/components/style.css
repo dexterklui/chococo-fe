@@ -1,0 +1,18 @@
+.dropdown-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .dropdown-item input[type="checkbox"] {
+    margin-right: 5px;
+  }
+  
+  .dropdown-item label::before {
+    content: '\2713';
+    margin-right: 5px;
+    display: none;
+  }
+  
+  .dropdown-item input[type="checkbox"]:checked + label::before {
+    display: inline-block;
+  }
