@@ -30,15 +30,22 @@ export default function ChatbotWidget({
         setEnd(false);
       },
       message: "Hello, I'm the coffee bot. How can I help you today?",
-      options: ["Filter data", "Plot a graph"],
+      options: [
+        "Filter data",
+        "Plot a graph",
+        "Give me coffee bean product recommendations",
+      ],
       path: (param) => {
         switch (param.userInput) {
           case "Filter data":
             return "filterStart";
           case "Plot a graph":
             return "llmPlotDataStart";
+          case "Give me coffee bean product recommendations":
+            return "llmRecommendStart";
         }
       },
+      chatDisabled: true,
     },
     filterStart: {
       message: "Hello, how would you like to filter the data?",
@@ -157,18 +164,71 @@ export default function ChatbotWidget({
     llmPlotDataEnd: {
       function: () => setEnd(false),
       message:
-        "Do you want to start again, or make an analysis of the current data?",
-      options: ["start again", "analysis"],
+        "Do you want to start again, or make another plot for current selection of data?",
+      options: ["start again", "plot graph"],
       path: (param) => {
         switch (param.userInput) {
           case "start again":
             return "start";
-          case "analysis":
-            // TODO: add analysis
-            param.injectMessage("Analysis is not yet implemented.");
-            return "start";
+          case "plot graph":
+            return "llmPlotDataStart";
         }
       },
+    },
+    llmRecommendStart: {
+      message:
+        "Sure, what criteria do you have in mind, like which flavor do you like?",
+      options: ["start over"],
+      path: (param) => {
+        if (param.userInput === "start over") return "start";
+        return "llmRecommendMain";
+      },
+    },
+    llmRecommendMain: {
+      message: async (param) => {
+        let response: CoffeeLlmResponse;
+        try {
+          response = await getCoffeeLlmResponse(queryId, param.userInput, 5);
+        } catch (error) {
+          console.error(error, queryId);
+          param.injectMessage("Sorry, I encountered an error.");
+          param.goToPath("start");
+          return;
+        }
+
+        // if (response.responseType === "data") console.log("received data");
+        if (response.responseType === "data" && response.data) {
+          const data =
+            typeof response.data == "string"
+              ? JSON.parse(response.data)
+              : response.data;
+          console.log(typeof data, ":", data);
+          setCoffees(data);
+        }
+
+        if (response.end) {
+          setEnd(true);
+          param.goToPath("llmRecommendEnd");
+        } else {
+          setEnd(false);
+        }
+
+        // Suppress message if its a data response for this
+        if (response.responseType == "message" && response.message)
+          return response.message;
+        return;
+      },
+      options: ["start over"],
+      path: (param) => {
+        if (param.userInput === "start over") return "start";
+        return "llmPlotDataMain";
+      },
+    },
+    llmRecommendEnd: {
+      message:
+        "Sure, here I have filtered the data with my recommendations. Please check my selections in the table or catalogue",
+      transition: { duration: 1000 },
+      path: "start",
     },
   };
 
