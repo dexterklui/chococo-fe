@@ -5,7 +5,7 @@ import {
   CoffeeLlmResponse,
   getCoffeeLlmResponse,
 } from "../lib/data-fetch/coffee";
-import { ColDef } from "./CoffeeProductTable";
+import LlmGraph from "./graphs/LlmGraph";
 
 function generateQueryId() {
   return crypto.randomUUID();
@@ -14,24 +14,50 @@ function generateQueryId() {
 export default function ChatbotWidget({
   setCoffees,
   // setColDefs,
+  coffees,
 }: {
   setCoffees: React.Dispatch<React.SetStateAction<Coffee[]>>;
-  setColDefs: React.Dispatch<React.SetStateAction<ColDef[]>>;
+  // setColDefs: React.Dispatch<React.SetStateAction<ColDef[]>>;
+  coffees: Coffee[];
 }) {
   const [queryId, setQueryId] = useState("");
+  const [end, setEnd] = useState(false);
 
   const flow: Flow = {
     start: {
-      function: () => setQueryId(generateQueryId()),
+      function: () => {
+        setQueryId(generateQueryId());
+        setEnd(false);
+      },
+      message: "Hello, I'm the coffee bot. How can I help you today?",
+      options: ["Filter data", "Plot a graph"],
+      path: (param) => {
+        switch (param.userInput) {
+          case "Filter data":
+            return "filterStart";
+          case "Plot a graph":
+            return "llmPlotDataStart";
+        }
+      },
+    },
+    filterStart: {
       message: "Hello, how would you like to filter the data?",
-      path: "llmPhase1",
-      // TODO: not filter data, straight to plotting graph
+      options: ["start over"],
+      path: (param) => {
+        if (param.userInput === "start over") return "start";
+        return "llmPhase1";
+      },
     },
     llmPhase1: {
       message: async (param) => {
         let response: CoffeeLlmResponse;
         try {
-          response = await getCoffeeLlmResponse(queryId, param.userInput, 1);
+          response = await getCoffeeLlmResponse(
+            queryId,
+            param.userInput,
+            1,
+            !end,
+          );
           // response = await getMockResponse();
         } catch (error) {
           console.error(error, queryId);
@@ -50,33 +76,99 @@ export default function ChatbotWidget({
         }
 
         if (response.end) {
+          setEnd(true);
           param.goToPath("llmPhase1End");
+        } else {
+          setEnd(false);
         }
 
         if (response.message) return response.message;
         return;
       },
-      path: "llmPhase1",
+      options: ["start over"],
+      path: (param) => {
+        if (param.userInput === "start over") return "start";
+        return "llmPhase1";
+      },
     },
     llmPhase1End: {
+      function: () => setEnd(false),
       message:
-        "Would you like to filter for new data, or plot a graph from current data?",
-      options: ["filter for new data", "plot a graph"],
+        "Would you like to start again, or plot a graph from current data?",
+      options: ["start again", "plot a graph"],
       chatDisabled: true,
       path: (param) => {
         switch (param.userInput) {
-          case "filter for new data":
+          case "start again":
             return "start";
           case "plot a graph":
-            // TODO: implement llmPhase2
-            param.injectMessage("Sorry, not implemented yet.");
-            return "start";
+            return "llmPlotDataStart";
         }
       },
     },
-    llmPlotData: {
-      message: "Which graph would you like to plot?",
-      options: ["bar chart", "scatter plot", "line chart"],
+    llmPlotDataStart: {
+      function: () => setEnd(false),
+      message:
+        "Can you tell me the type of graph you want to plot, and what columns for the axises?",
+      options: ["start over"],
+      path: (param) => {
+        if (param.userInput === "start over") return "start";
+        return "llmPlotDataMain";
+      },
+    },
+    llmPlotDataMain: {
+      message: async (param) => {
+        let response: CoffeeLlmResponse;
+        try {
+          response = await getCoffeeLlmResponse(queryId, param.userInput, 2);
+        } catch (error) {
+          console.error(error, queryId);
+          param.injectMessage("Sorry, I encountered an error.");
+          param.goToPath("start");
+          return;
+        }
+
+        // if (response.responseType === "data") console.log("received data");
+        if (response.responseType === "data" && response.data) {
+          const data =
+            typeof response.data == "string"
+              ? JSON.parse(response.data)
+              : response.data;
+          console.log(typeof data, ":", data);
+          param.injectMessage(<LlmGraph data={coffees} schema={data} />);
+        }
+
+        if (response.end) {
+          setEnd(true);
+          param.goToPath("llmPlotDataEnd");
+        } else {
+          setEnd(false);
+        }
+
+        if (response.message) return response.message;
+        return;
+      },
+      options: ["start over"],
+      path: (param) => {
+        if (param.userInput === "start over") return "start";
+        return "llmPlotDataMain";
+      },
+    },
+    llmPlotDataEnd: {
+      function: () => setEnd(false),
+      message:
+        "Do you want to start again, or make an analysis of the current data?",
+      options: ["start again", "analysis"],
+      path: (param) => {
+        switch (param.userInput) {
+          case "start again":
+            return "start";
+          case "analysis":
+            // TODO: add analysis
+            param.injectMessage("Analysis is not yet implemented.");
+            return "start";
+        }
+      },
     },
   };
 

@@ -18,7 +18,8 @@ const defaultColDefs: ColDef[] = [
 
 export default function CoffeeProducts() {
   const [coffees, setCoffees] = useState<Coffee[]>([]);
-  const [colDefs, setColDefs] = useState<ColDef[]>(defaultColDefs);
+  const colDefs = defaultColDefs;
+  // const [colDefs, setColDefs] = useState<ColDef[]>(defaultColDefs);
   const [tableMode, setTableMode] = useState<boolean>(true);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export default function CoffeeProducts() {
           <CoffeeProductsCatalogue coffees={coffees} />
         )}
       </section>
-      <ChatbotWidget setCoffees={setCoffees} setColDefs={setColDefs} />
+      <ChatbotWidget setCoffees={setCoffees} coffees={coffees} />
     </>
   );
 }
