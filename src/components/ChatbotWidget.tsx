@@ -152,6 +152,8 @@ export default function ChatbotWidget({
               ? JSON.parse(response.data)
               : response.data;
           console.log(typeof data, ":", data);
+          if (data.graph_type !== "Bar")
+            param.injectMessage("Sorry, only support bar graph for now.");
           param.injectMessage(<LlmGraph data={coffees} schema={data} />);
         }
 
