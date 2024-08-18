@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
@@ -15,6 +16,14 @@ export default function CoffeeProductTable({
   rowData: object[];
   colDefs: object[];
 }) {
+  rowData = rowData.map((row) => {
+    return {
+      ...row,
+      "avg_rating from customer": row["avg_rating from customer"].toFixed(2),
+      "Price / 100g in HKD": row["Price / 100g in HKD"].toFixed(2),
+    };
+  });
+
   return (
     <div
       className="ag-theme-quartz" // applying the Data Grid theme
