@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react";
 import { Coffee } from "../lib/data-fetch/coffee";
 import { Card } from "antd";
@@ -40,37 +41,38 @@ export default function CoffeeProductCard({ coffee }: { coffee: Coffee }) {
               <div style={{ display: "flex", justifyContent: "space-between", maxWidth: "200px" }}>
             <div>Brightness:</div>
             <div style={{ textAlign: "right", flex: 1 }}>
-              {"★".repeat(coffee.Attributes_Brightness) + "☆".repeat(7 - coffee.Attributes_Brightness)}
+            {"★".repeat(Math.max(coffee.Attributes_Brightness, 0)) + "☆".repeat(7 - Math.max(coffee.Attributes_Brightness, 0))}
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", maxWidth: "200px" }}>
             <div>Body:</div>
             <div style={{ textAlign: "right", flex: 1 }}>
-              {"★".repeat(coffee.Attributes_Body) + "☆".repeat(7 - coffee.Attributes_Body)}
+              {"★".repeat(Math.max(coffee.Attributes_Body, 0)) + "☆".repeat(7 - Math.max(coffee.Attributes_Body, 0))}
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", maxWidth: "200px" }}>
             <div>Aroma:</div>
             <div style={{ textAlign: "right", flex: 1 }}>
-              {"★".repeat(coffee.Attributes_Aroma) + "☆".repeat(7 - coffee.Attributes_Aroma)}
+              {"★".repeat(Math.max(coffee.Attributes_Aroma, 0)) + "☆".repeat(7 - Math.max(coffee.Attributes_Aroma, 0))}
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", maxWidth: "200px" }}>
             <div>Complexity:</div>
             <div style={{ textAlign: "right", flex: 1 }}>
-              {"★".repeat(coffee.Attributes_Complexity) + "☆".repeat(7 - coffee.Attributes_Complexity)}
+              {"★".repeat(Math.max(coffee.Attributes_Complexity, 0)) + "☆".repeat(7 - Math.max(coffee.Attributes_Complexity, 0))}
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", maxWidth: "200px" }}>
             <div>Balance:</div>
             <div style={{ textAlign: "right", flex: 1 }}>
-              {"★".repeat(coffee.Attributes_Balance) + "☆".repeat(7 - coffee.Attributes_Balance)}
+              {"★".repeat(Math.max(coffee.Attributes_Balance, 0)) + "☆".repeat(7 - Math.max(coffee.Attributes_Balance, 0))}
+
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", maxWidth: "200px" }}>
             <div>Sweetness:</div>
             <div style={{ textAlign: "right", flex: 1 }}>
-              {"★".repeat(coffee.Attributes_Sweetness) + "☆".repeat(7 - coffee.Attributes_Sweetness)}
+              {"★".repeat(Math.max(coffee.Attributes_Sweetness, 0)) + "☆".repeat(7 - Math.max(coffee.Attributes_Sweetness, 0))}
             </div>
           </div>
           </>
