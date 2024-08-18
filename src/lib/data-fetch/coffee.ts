@@ -37,6 +37,7 @@ export const CoffeeKeyDef = [
   { field: "Attributes_Complexity" },
   { field: "Attributes_Balance" },
   { field: "Attributes_Sweetness" },
+  { field: "summary_comment" },
 ];
 
 export type Coffee = {

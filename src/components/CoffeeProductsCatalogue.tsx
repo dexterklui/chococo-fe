@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Coffee } from "../lib/data-fetch/coffee";
 import CoffeeProductCard from "./CoffeeProductCard";
 import React, { useState } from 'react';
@@ -12,7 +13,7 @@ const MultiValueDropdown = ({ options, defaultValue, onChange }) => (
     onChange={onChange}
   />
 );
-const CoffeeProductsCatalogue = ({ coffees }) => {
+const CoffeeProductsCatalogue = ({ coffees }: { coffees: Coffee }) => {
   const [selectedCountries, setSelectedCountries] = useState([{ value: 'all', label: 'All' }]);
   const [selectedAttributesBrightness, setSelectedAttributesBrightness] = useState([{ value: 'all', label: 'All' }]);
   const [selectedAttributesBody, setselectedAttributesBody] = useState([{ value: 'all', label: 'All' }]);
@@ -89,7 +90,11 @@ const CoffeeProductsCatalogue = ({ coffees }) => {
       {/* Display filtered coffees */}
       <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
         {filteredCoffees.map((coffee) => (
-          <CoffeeProductCard key={coffee.name} coffee={coffee} />
+          <CoffeeProductCard
+            // @ts-ignore
+            key={coffee._id["$oid"] ?? coffee._id}
+            coffee={coffee}
+          />
         ))}
       </div>
     </div>

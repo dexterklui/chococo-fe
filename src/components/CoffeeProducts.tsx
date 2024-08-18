@@ -14,20 +14,39 @@ const defaultColDefs: ColDef[] = [
   { field: "Region", filter: true },
   { field: "Price_per_100g_HKD" },
   { field: "Roast", filter: true },
+  { field: "avg_rating_from_customer", filter: true },
+  { field: "Flavors_Spicy", filter: true },
+  { field: "Flavors_Choclaty", filter: true },
+  { field: "Flavors_Nutty", filter: true },
+  { field: "Flavors_Buttery", filter: true },
+  { field: "Flavors_Fruity", filter: true },
+  { field: "Flavors_Flowery", filter: true },
+  { field: "Flavors_Winey", filter: true },
+  { field: "Flavors_Earthy", filter: true },
+  { field: "Attributes_Brightness", filter: true },
+  { field: "Attributes_Body", filter: true },
+  { field: "Attributes_Aroma", filter: true },
+  { field: "Attributes_Complexity", filter: true },
+  { field: "Attributes_Balance", filter: true },
+  { field: "Attributes_Sweetness", filter: true },
+  { field: "summary_comment" },
 ];
 
 export default function CoffeeProducts() {
   const [coffees, setCoffees] = useState<Coffee[]>([]);
-  const [colDefs, setColDefs] = useState<ColDef[]>(defaultColDefs);
+  const [allCoffees, setAllCoffees] = useState<Coffee[]>([]);
+  const colDefs = defaultColDefs;
+  // const [colDefs, setColDefs] = useState<ColDef[]>(defaultColDefs);
   const [tableMode, setTableMode] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchData() {
       const data = await getAllCoffee();
       setCoffees(data);
+      setAllCoffees(data);
     }
     fetchData();
-  }, [setCoffees]);
+  }, [setCoffees, setAllCoffees]);
 
   return (
     <>
@@ -46,7 +65,11 @@ export default function CoffeeProducts() {
           <CoffeeProductsCatalogue coffees={coffees} />
         )}
       </section>
-      <ChatbotWidget setCoffees={setCoffees} setColDefs={setColDefs} />
+      <ChatbotWidget
+        setCoffees={setCoffees}
+        coffees={coffees}
+        allCoffees={allCoffees}
+      />
     </>
   );
 }
