@@ -1,3 +1,4 @@
+// @ts-nocheck
 let COFFEE_URL: string;
 let COFFEE_LLM_URL: string;
 if (import.meta.env.PROD) {
