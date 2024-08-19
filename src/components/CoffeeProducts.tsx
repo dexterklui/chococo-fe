@@ -7,7 +7,7 @@ import CoffeeProductTable from "./CoffeeProductTable";
 export default function CoffeeProducts() {
   const [coffees, setCoffees] = useState<Coffee[]>([]);
   const [allCoffees, setAllCoffees] = useState<Coffee[]>([]);
-  const [tableMode, setTableMode] = useState<boolean>(true);
+  const [tableMode, setTableMode] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchData() {
