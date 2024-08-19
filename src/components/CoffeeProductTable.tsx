@@ -49,7 +49,7 @@ export default function CoffeeProductTable({
   return (
     <div
       className="ag-theme-quartz" // applying the Data Grid theme
-      style={{ height: 500, minWidth: "70vw" }} // the Data Grid will fill the size of the parent container
+      style={{ height: "75vh", minWidth: "90vw" }} // the Data Grid will fill the size of the parent container
     >
       <AgGridReact
         rowData={coffees.map((coffee) => ({

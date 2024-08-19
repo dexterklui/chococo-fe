@@ -100,7 +100,7 @@ const CoffeeProductsCatalogue = ({ coffees }: { coffees: Coffee[] }) => {
   );
 
   return (
-    <div>
+    <div style={{ maxWidth: "1280px", margin: "auto" }}>
       {/* Dropdowns for filtering */}
       <div style={{ display: "flex", gap: "16px", marginBottom: "16px" }}>
         <MultiValueDropdown
@@ -120,7 +120,14 @@ const CoffeeProductsCatalogue = ({ coffees }: { coffees: Coffee[] }) => {
         />
       </div>
       {/* Display filtered coffees */}
-      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "8px",
+          flexWrap: "wrap",
+          margin: "auto",
+        }}
+      >
         {filteredCoffees.map((coffee) => (
           <CoffeeProductCard
             // @ts-ignore

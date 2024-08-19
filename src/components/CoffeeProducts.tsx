@@ -19,7 +19,7 @@ export default function CoffeeProducts() {
   }, [setCoffees, setAllCoffees]);
 
   return (
-    <>
+    <div>
       <div style={{ display: "flex", justifyContent: "center", gap: "8px" }}>
         <button onClick={() => setTableMode(!tableMode)}>
           {tableMode ? "Show Catalogue" : "Show Table"}
@@ -40,6 +40,6 @@ export default function CoffeeProducts() {
         coffees={coffees}
         allCoffees={allCoffees}
       />
-    </>
+    </div>
   );
 }
